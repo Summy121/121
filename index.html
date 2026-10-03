@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>餓吉 📜 神界第 857 號籤仙 | 美食命運 Hub</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Google Fonts for Cute Soft Aesthetic -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            creamBg: '#FFF8F0',
+            cardBg: '#FFFFFF',
+            softPink: '#FFB7B2',
+            warmCoral: '#FF6F61',
+            sunnyYellow: '#FFE49E',
+            brightYellow: '#FFD166',
+            pastelPurple: '#C7CEEA',
+            pastelMint: '#B5EAD7',
+            inkBrown: '#4A3E3D',
+            softGray: '#8C7A7B'
+          },
+          fontFamily: {
+            sans: ['"Zen Maru Gothic"', '"Fredoka"', 'sans-serif'],
+          },
+          boxShadow: {
+            'cute': '0 8px 24px -4px rgba(255, 111, 97, 0.15), 0 4px 12px rgba(74, 62, 61, 0.05)',
+            'pill': '0 4px 14px rgba(0, 0, 0, 0.08)',
+            'glow': '0 0 20px rgba(255, 209, 102, 0.6)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #FFF8F0;
+      color: #4A3E3D;
+      font-family: 'Zen Maru Gothic', sans-serif;
+    }
+
+    /* Soft Floating Animation */
+    @keyframes floatCute {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(1.5deg); }
+    }
+    .animate-float {
+      animation: floatCute 3.5s ease-in-out infinite;
+    }
+
+    /* Bucket Shake Animation */
+    @keyframes bucketShake {
+      0% { transform: rotate(0deg); }
+      20% { transform: rotate(-10deg) scale(1.03); }
+      40% { transform: rotate(10deg) scale(1.03); }
+      60% { transform: rotate(-8deg); }
+      80% { transform: rotate(8deg); }
+      100% { transform: rotate(0deg); }
+    }
+    .animate-shake {
+      animation: bucketShake 0.5s ease-in-out infinite;
+    }
+
+    /* Stick Pop Out Animation */
+    @keyframes stickPop {
+      0% { transform: translateY(20px) opacity(0); }
+      60% { transform: translateY(-30px) opacity(1); }
+      100% { transform: translateY(-15px) opacity(1); }
+    }
+    .animate-stick-pop {
+      animation: stickPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    /* Wobble Hover for Cards */
+    @keyframes wobbleCute {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      25% { transform: scale(1.03) rotate(-2deg); }
+      75% { transform: scale(1.03) rotate(2deg); }
+    }
+    .hover-wobble:hover {
+      animation: wobbleCute 0.4s ease-in-out;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FFF8F0;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #FFB7B2;
+      border-radius: 99px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between relative overflow-x-hidden">
+
+  <!-- Top Navigation Header -->
+  <header class="sticky top-0 z-40 bg-creamBg/90 backdrop-blur-md border-b-2 border-softPink/30 px-4 py-3">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <!-- Logo & Deity Title -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-2xl bg-warmCoral flex items-center justify-center text-white font-black text-lg shadow-pill">
+          籤
+        </div>
+        <div>
+          <h1 class="font-extrabold text-lg text-inkBrown tracking-wide">餓吉 E-Ji</h1>
+          <p class="text-[11px] text-warmCoral font-bold">神界第 857 號 • 胃口籤仙 🍜</p>
+        </div>
+      </div>
+
+      <!-- Floating Catchphrase Pill -->
+      <div class="hidden sm:flex items-center bg-sunnyYellow/60 border border-brightYellow px-3.5 py-1.5 rounded-full text-xs font-bold text-inkBrown shadow-sm">
+        <span>💬 肚餓別發愁，餓吉幫你抽！</span>
+      </div>
+
+      <!-- Sound FX Toggle Button -->
+      <button id="soundToggleBtn" onclick="toggleSound()" class="flex items-center space-x-1.5 bg-white border-2 border-softPink hover:bg-softPink/20 px-3 py-1.5 rounded-full text-xs font-bold transition text-inkBrown shadow-sm">
+        <span id="soundIcon">🔊</span>
+        <span id="soundStatus" class="hidden md:inline">音效: 開</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="relative z-10 flex-grow max-w-4xl mx-auto w-full px-4 py-6 space-y-6">
+
+    <!-- PROFILE SECTION -->
+    <section class="bg-cardBg border-2 border-softPink/50 rounded-[2rem] p-5 md:p-6 shadow-cute relative overflow-hidden">
+      <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+        
+        <!-- Avatar Column -->
+        <div class="flex flex-col items-center flex-shrink-0">
+          <div class="relative w-36 h-36 md:w-40 md:h-40 animate-float">
+            <!-- Cute SVG Avatar of 餓吉 -->
+            <svg viewBox="0 0 200 200" class="w-full h-full filter drop-shadow-md">
+              <!-- Halo -->
+              <ellipse cx="100" cy="32" rx="35" ry="8" fill="none" stroke="#FFD166" stroke-width="5" />
+              <!-- Chubby Deity Body -->
+              <circle cx="100" cy="110" r="62" fill="#FFF8F0" stroke="#FF6F61" stroke-width="5" />
+              <!-- Cheek Blushes -->
+              <circle cx="68" cy="118" r="10" fill="#FFB7B2" opacity="0.8" />
+              <circle cx="132" cy="118" r="10" fill="#FFB7B2" opacity="0.8" />
+              <!-- Eyes (Cute Happy Curved Lines) -->
+              <path d="M 66 102 Q 74 94 82 102" fill="none" stroke="#4A3E3D" stroke-width="4" stroke-linecap="round" />
+              <path d="M 118 102 Q 126 94 134 102" fill="none" stroke="#4A3E3D" stroke-width="4" stroke-linecap="round" />
+              <!-- Open Hungry Mouth -->
+              <path d="M 85 118 Q 100 138 115 118 Z" fill="#FF6F61" />
+              <!-- Rice Dumpling Bowl in Hand -->
+              <path d="M 70 148 Q 100 178 130 148 Z" fill="#FFE49E" stroke="#4A3E3D" stroke-width="4" />
+              <circle cx="90" cy="142" r="8" fill="#FFF8F0" />
+              <circle cx="100" cy="138" r="9" fill="#FFF8F0" />
+              <circle cx="110" cy="142" r="8" fill="#FFF8F0" />
+              <!-- Steam puff -->
+              <path d="M 90 128 Q 85 120 90 115" fill="none" stroke="#FF6F61" stroke-width="2.5" stroke-linecap="round" opacity="0.6" />
+              <path d="M 110 128 Q 115 120 110 115" fill="none" stroke="#FF6F61" stroke-width="2.5" stroke-linecap="round" opacity="0.6" />
+            </svg>
+          </div>
+          <!-- Calorie Badge -->
+          <span class="mt-1 bg-pastelMint text-inkBrown text-[11px] font-extrabold px-3 py-1 rounded-full border border-emerald-300 shadow-sm">
+            ✨ 熱量 0 卡結界中
+          </span>
+        </div>
+
+        <!-- Info Column -->
+        <div class="flex-1 text-center md:text-left space-y-3">
+          <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
+            <span class="bg-warmCoral text-white text-xs font-black px-3 py-1 rounded-full">
+              神界第 857 號籤仙
+            </span>
+            <span class="bg-sunnyYellow text-inkBrown text-xs font-black px-3 py-1 rounded-full">
+              選擇困難症終結者 ⚡
+            </span>
+            <span class="bg-pastelPurple text-inkBrown text-xs font-black px-3 py-1 rounded-full">
+              美食降頭師 🌶️
+            </span>
+          </div>
+
+          <h2 class="text-2xl md:text-3xl font-black text-inkBrown">
+            餓吉 <span class="text-sm font-bold text-softGray">(E-Ji)</span>
+          </h2>
+
+          <p class="text-xs md:text-sm text-inkBrown/90 leading-relaxed bg-creamBg p-3.5 rounded-2xl border border-softPink/30">
+            專治<strong class="text-warmCoral">「隨便、都可以、不知道吃啥」</strong>的三連絕症！掌握強迫下決定的<strong class="text-warmCoral">【霸王條款】</strong>神仙魔法！
+          </p>
+
+          <!-- Collapsible Lore Toggle -->
+          <div class="pt-1">
+            <button onclick="toggleLore()" class="text-xs font-black text-warmCoral hover:underline flex items-center justify-center md:justify-start space-x-1 mx-auto md:mx-0">
+              <span id="loreToggleText">📜 點擊查看餓吉神仙故事說明</span>
+              <span id="loreIcon">▼</span>
+            </button>
+            <div id="loreBox" class="hidden mt-2 text-xs text-softGray bg-white p-3 rounded-xl border border-softPink/40 space-y-1">
+              <p>• <strong>職責：</strong>掌管凡間人類的胃口與腸胃幸運。</p>
+              <p>• <strong>性格：</strong>小欠扁但極講義氣，肚子總是咕嚕咕嚕叫。</p>
+              <p>• <strong>神仙定律：</strong>肚子餓別猶豫，抽中即是天意！</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB NAVIGATION BAR -->
+    <div class="flex items-center justify-center p-1.5 bg-white/80 backdrop-blur-md rounded-2xl border-2 border-softPink/40 shadow-sm max-w-md mx-auto gap-1">
+      <button id="tabBtn1" onclick="switchTab(1)" class="tab-btn flex-1 py-2.5 px-3 rounded-xl font-black text-xs md:text-sm transition-all duration-300 bg-warmCoral text-white shadow-sm">
+        🎋 美食籤筒
+      </button>
+      <button id="tabBtn2" onclick="switchTab(2)" class="tab-btn flex-1 py-2.5 px-3 rounded-xl font-black text-xs md:text-sm transition-all duration-300 text-softGray hover:text-inkBrown">
+        🎯 霸王輪盤
+      </button>
+      <button id="tabBtn3" onclick="switchTab(3)" class="tab-btn flex-1 py-2.5 px-3 rounded-xl font-black text-xs md:text-sm transition-all duration-300 text-softGray hover:text-inkBrown">
+        🎁 幸運盲盒
+      </button>
+    </div>
+
+    <!-- GAME 1: 美食命運求籤筒 (Fortune Draw) -->
+    <div id="gameTab1" class="game-container space-y-6">
+      <div class="bg-cardBg border-2 border-softPink/50 rounded-[2rem] p-6 text-center space-y-6 shadow-cute relative">
+        <div class="space-y-1">
+          <span class="text-xs font-black text-warmCoral bg-softPink/20 px-3 py-1 rounded-full">
+            GAME 01 • FORTUNE DRAW
+          </span>
+          <h3 class="text-xl md:text-2xl font-black text-inkBrown">美食命運求籤筒</h3>
+          <p class="text-xs text-softGray">點擊搖晃籤筒，讓餓吉為你掉出今日唯一解答！</p>
+        </div>
+
+        <!-- Bamboo Bucket Graphic & Stick -->
+        <div class="relative w-44 h-56 mx-auto cursor-pointer group" onclick="drawFortune()">
+          <!-- Stick Container (pops up) -->
+          <div id="drawnStick" class="hidden absolute left-1/2 -translate-x-1/2 top-2 z-10 w-8 h-32 bg-sunnyYellow border-2 border-inkBrown rounded-t-lg flex flex-col items-center justify-start pt-2 font-black text-[11px] text-inkBrown shadow-md animate-stick-pop">
+            <span id="stickTierText">暴吉</span>
+            <span class="text-[9px] text-warmCoral mt-1">籤</span>
+          </div>
+
+          <!-- Bucket SVG -->
+          <div id="bucketSvg" class="relative z-20 w-full h-full transform transition group-hover:scale-105">
+            <svg viewBox="0 0 160 200" class="w-full h-full filter drop-shadow-md">
+              <!-- Bucket Body -->
+              <path d="M 30 50 L 130 50 L 120 180 L 40 180 Z" fill="#FFB7B2" stroke="#4A3E3D" stroke-width="4" />
+              <rect x="26" y="70" width="108" height="10" rx="3" fill="#FF6F61" />
+              <rect x="34" y="150" width="92" height="10" rx="3" fill="#FF6F61" />
+              <!-- Sticks in bucket -->
+              <rect x="50" y="20" width="8" height="60" rx="2" fill="#FFE49E" stroke="#4A3E3D" stroke-width="2" transform="rotate(-12 50 50)" />
+              <rect x="70" y="15" width="8" height="65" rx="2" fill="#FFD166" stroke="#4A3E3D" stroke-width="2" />
+              <rect x="90" y="22" width="8" height="58" rx="2" fill="#FFE49E" stroke="#4A3E3D" stroke-width="2" transform="rotate(10 90 50)" />
+              <rect x="105" y="28" width="8" height="50" rx="2" fill="#FFB7B2" stroke="#4A3E3D" stroke-width="2" transform="rotate(20 105 50)" />
+              <!-- Seal Emblem -->
+              <circle cx="80" cy="115" r="22" fill="#FFF8F0" stroke="#FF6F61" stroke-width="3" />
+              <text x="80" y="122" font-size="18" fill="#FF6F61" font-weight="900" text-anchor="middle">吉</text>
+            </svg>
+          </div>
+        </div>
+
+        <button onclick="drawFortune()" class="bg-gradient-to-r from-warmCoral to-softPink hover:from-red-500 hover:to-warmCoral text-white font-black text-sm px-8 py-3 rounded-full shadow-md transition transform active:scale-95">
+          ✨ 誠心搖晃求籤 ✨
+        </button>
+
+        <!-- Fortune Card Result Modal/Panel -->
+        <div id="fortuneResult" class="hidden max-w-sm mx-auto bg-creamBg border-2 border-warmCoral rounded-2xl p-5 text-center space-y-3 shadow-lg transition-all duration-300">
+          <div class="inline-block bg-warmCoral text-white text-xs font-extrabold px-3 py-1 rounded-full">
+            【餓吉命運籤卡】
+          </div>
+          
+          <div id="fortuneBadge" class="text-3xl font-black text-warmCoral">
+            <!-- Tier -->
+          </div>
+
+          <p id="fortuneQuote" class="text-xs md:text-sm font-bold text-inkBrown leading-relaxed bg-white p-3 rounded-xl border border-softPink/40">
+            <!-- Quote -->
+          </p>
+
+          <div class="bg-sunnyYellow/60 p-3 rounded-xl border border-brightYellow space-y-1">
+            <span class="text-[11px] font-extrabold text-softGray">今日唯一指定解藥餐點</span>
+            <div id="fortuneFood" class="text-xl font-black text-inkBrown">
+              <!-- Food -->
+            </div>
+          </div>
+
+          <button onclick="shareFortune()" class="w-full bg-white hover:bg-softPink/20 text-inkBrown font-extrabold text-xs py-2 rounded-xl border border-softPink transition">
+            📋 複製今日命運籤條
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME 2: 美食俄羅斯輪盤 (Roulette) -->
+    <div id="gameTab2" class="game-container hidden space-y-6">
+      <div class="bg-cardBg border-2 border-softPink/50 rounded-[2rem] p-6 text-center space-y-5 shadow-cute">
+        <div class="space-y-1">
+          <span class="text-xs font-black text-purple-500 bg-purple-100 px-3 py-1 rounded-full">
+            GAME 02 • FOOD ROULETTE
+          </span>
+          <h3 class="text-xl md:text-2xl font-black text-inkBrown">美食俄羅斯輪盤</h3>
+          <p class="text-xs text-softGray">轉中即為命運！將強制啟動【霸王條款】鎖定倒數！</p>
+        </div>
+
+        <!-- Presets -->
+        <div class="flex flex-wrap items-center justify-center gap-2 text-xs font-bold">
+          <span class="text-softGray">快選菜單:</span>
+          <button onclick="loadPreset('bento')" class="bg-creamBg hover:bg-sunnyYellow px-3 py-1 rounded-full border border-softPink/40 transition">🍱 國民便當</button>
+          <button onclick="loadPreset('noodle')" class="bg-creamBg hover:bg-sunnyYellow px-3 py-1 rounded-full border border-softPink/40 transition">🍜 湯麵拉麵</button>
+          <button onclick="loadPreset('fastfood')" class="bg-creamBg hover:bg-sunnyYellow px-3 py-1 rounded-full border border-softPink/40 transition">🍔 漢堡速食</button>
+          <button onclick="loadPreset('healthy')" class="bg-creamBg hover:bg-sunnyYellow px-3 py-1 rounded-full border border-softPink/40 transition">🥗 輕食健康</button>
+        </div>
+
+        <!-- Tag List & Custom Input -->
+        <div class="max-w-md mx-auto bg-creamBg p-3.5 rounded-2xl border border-softPink/40 space-y-2 text-left">
+          <div class="flex items-center justify-between text-xs font-bold text-softGray">
+            <span>候選清單 (3 ~ 6 個)：</span>
+            <span id="rouletteCount">4/6</span>
+          </div>
+          <div id="rouletteChips" class="flex flex-wrap gap-1.5">
+            <!-- Chips dynamic -->
+          </div>
+          <div class="flex space-x-2 pt-1">
+            <input type="text" id="customFoodInput" maxlength="10" placeholder="新增想吃的餐點..." class="flex-1 bg-white border border-softPink/60 rounded-xl px-3 py-1.5 text-xs text-inkBrown focus:outline-none focus:border-warmCoral">
+            <button onclick="addFoodChip()" class="bg-warmCoral hover:bg-red-500 text-white font-extrabold px-3 py-1.5 rounded-xl text-xs transition">
+              ➕ 新增
+            </button>
+          </div>
+        </div>
+
+        <!-- Canvas Wheel -->
+        <div class="relative w-64 h-64 md:w-72 md:h-72 mx-auto">
+          <!-- Top Arrow Pointer -->
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
+            <div class="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[20px] border-t-warmCoral filter drop-shadow"></div>
+          </div>
+          <!-- Wheel Canvas -->
+          <canvas id="rouletteCanvas" width="280" height="280" class="w-full h-full rounded-full border-4 border-sunnyYellow shadow-md"></canvas>
+          <!-- Center Button -->
+          <button id="spinBtn" onclick="spinWheel()" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-gradient-to-br from-sunnyYellow to-brightYellow hover:scale-105 active:scale-95 text-inkBrown font-black text-sm rounded-full border-4 border-white shadow-md flex flex-col items-center justify-center transition">
+            <span>啟動</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME 3: 美食盲盒開箱 (Blind Box) -->
+    <div id="gameTab3" class="game-container hidden space-y-6">
+      <div class="bg-cardBg border-2 border-softPink/50 rounded-[2rem] p-6 text-center space-y-6 shadow-cute">
+        <div class="space-y-1">
+          <span class="text-xs font-black text-emerald-600 bg-emerald-100 px-3 py-1 rounded-full">
+            GAME 03 • BLIND BOX
+          </span>
+          <h3 class="text-xl md:text-2xl font-black text-inkBrown">美食盲盒開箱</h3>
+          <p class="text-xs text-softGray">三款神秘盲盒！含有 <strong class="text-warmCoral">5% 隱藏彩蛋率</strong>（奢華和牛 vs 超商茶葉蛋大冒險）</p>
+        </div>
+
+        <!-- 3 Cute Box Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
+          
+          <!-- Box 1 -->
+          <div onclick="openBlindBox('red')" class="hover-wobble cursor-pointer bg-gradient-to-b from-red-50 to-creamBg border-2 border-red-200 rounded-2xl p-4 text-center space-y-3 shadow-sm hover:border-warmCoral transition">
+            <div class="w-20 h-20 mx-auto relative">
+              <svg viewBox="0 0 100 100" class="w-full h-full">
+                <rect x="15" y="35" width="70" height="55" rx="8" fill="#FFB7B2" stroke="#4A3E3D" stroke-width="3" />
+                <rect x="10" y="25" width="80" height="15" rx="4" fill="#FF6F61" stroke="#4A3E3D" stroke-width="3" />
+                <rect id="seal-red" x="43" y="20" width="14" height="70" fill="#FFE49E" stroke="#4A3E3D" stroke-width="1.5" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-extrabold text-sm text-inkBrown">🔴 吉利紅盲盒</h4>
+              <p class="text-[10px] text-softGray mt-0.5">經典美味降臨</p>
+            </div>
+            <button class="w-full bg-warmCoral hover:bg-red-500 text-white font-extrabold text-xs py-1.5 rounded-xl transition">
+              ✂️ 撕封條開箱
+            </button>
+          </div>
+
+          <!-- Box 2 -->
+          <div onclick="openBlindBox('gold')" class="hover-wobble cursor-pointer bg-gradient-to-b from-amber-50 to-creamBg border-2 border-amber-200 rounded-2xl p-4 text-center space-y-3 shadow-sm hover:border-brightYellow transition">
+            <div class="w-20 h-20 mx-auto relative">
+              <svg viewBox="0 0 100 100" class="w-full h-full">
+                <rect x="15" y="35" width="70" height="55" rx="8" fill="#FFE49E" stroke="#4A3E3D" stroke-width="3" />
+                <rect x="10" y="25" width="80" height="15" rx="4" fill="#FFD166" stroke="#4A3E3D" stroke-width="3" />
+                <rect id="seal-gold" x="43" y="20" width="14" height="70" fill="#C7CEEA" stroke="#4A3E3D" stroke-width="1.5" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-extrabold text-sm text-inkBrown">🟡 皇室金盲盒</h4>
+              <p class="text-[10px] text-softGray mt-0.5">尊榮美食好料</p>
+            </div>
+            <button class="w-full bg-brightYellow hover:bg-amber-400 text-inkBrown font-extrabold text-xs py-1.5 rounded-xl transition">
+              ✂️ 撕封條開箱
+            </button>
+          </div>
+
+          <!-- Box 3 -->
+          <div onclick="openBlindBox('purple')" class="hover-wobble cursor-pointer bg-gradient-to-b from-purple-50 to-creamBg border-2 border-purple-200 rounded-2xl p-4 text-center space-y-3 shadow-sm hover:border-purple-300 transition">
+            <div class="w-20 h-20 mx-auto relative">
+              <svg viewBox="0 0 100 100" class="w-full h-full">
+                <rect x="15" y="35" width="70" height="55" rx="8" fill="#C7CEEA" stroke="#4A3E3D" stroke-width="3" />
+                <rect x="10" y="25" width="80" height="15" rx="4" fill="#9D8DF1" stroke="#4A3E3D" stroke-width="3" />
+                <rect id="seal-purple" x="43" y="20" width="14" height="70" fill="#FFB7B2" stroke="#4A3E3D" stroke-width="1.5" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-extrabold text-sm text-inkBrown">🟣 神秘紫盲盒</h4>
+              <p class="text-[10px] text-softGray mt-0.5">驚喜冒險預感</p>
+            </div>
+            <button class="w-full bg-purple-400 hover:bg-purple-500 text-white font-extrabold text-xs py-1.5 rounded-xl transition">
+              ✂️ 撕封條開箱
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Blind Box Result Modal Container -->
+        <div id="blindBoxResultModal" class="hidden max-w-sm mx-auto bg-creamBg border-2 border-warmCoral rounded-2xl p-5 text-center space-y-3 shadow-lg">
+          <span id="blindBoxBadge" class="bg-warmCoral text-white text-[11px] font-extrabold px-3 py-1 rounded-full">
+            <!-- Badge -->
+          </span>
+          <div id="blindBoxIcon" class="text-5xl my-1 animate-bounce">
+            🎁
+          </div>
+          <h4 id="blindBoxTitle" class="text-xl font-black text-inkBrown">
+            <!-- Title -->
+          </h4>
+          <p id="blindBoxDesc" class="text-xs text-softGray bg-white p-3 rounded-xl border border-softPink/40 leading-relaxed">
+            <!-- Desc -->
+          </p>
+          <button onclick="closeBlindBoxModal()" class="bg-warmCoral text-white font-extrabold text-xs px-6 py-2 rounded-xl hover:bg-red-500 transition">
+            👌 餓吉知道了，收下！
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- OVERLORD CLAUSE (霸王條款) POPUP MODAL -->
+  <div id="overlordModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-creamBg border-4 border-warmCoral rounded-[2rem] p-6 max-w-sm w-full text-center space-y-4 shadow-2xl relative animate-scale-up">
+      
+      <div class="inline-block bg-warmCoral text-white font-black text-xs px-3.5 py-1 rounded-full shadow">
+        🚨 霸王條款強制生效
+      </div>
+
+      <h3 class="text-xl font-black text-inkBrown">
+        命運已決！不許反悔！
+      </h3>
+
+      <!-- Result Food Box -->
+      <div class="bg-white p-3.5 rounded-2xl border-2 border-sunnyYellow space-y-1">
+        <span class="text-[11px] text-softGray font-bold">餓吉指定今日唯一餐點：</span>
+        <div id="overlordResultFood" class="text-2xl font-black text-warmCoral">
+          <!-- Food Name -->
+        </div>
+      </div>
+
+      <!-- Warning Note -->
+      <p class="text-xs text-inkBrown/80 leading-relaxed bg-sunnyYellow/40 p-3 rounded-xl border border-brightYellow">
+        🔒 鎖定倒數中！命運已決，10秒內不許改單，違者請全場喝飲料！
+      </p>
+
+      <!-- Countdown Number -->
+      <div class="flex items-center justify-center space-x-2">
+        <span class="text-xs font-bold text-softGray">鎖定倒數:</span>
+        <span id="overlordCountdown" class="text-3xl font-black text-warmCoral font-mono bg-white px-4 py-1 rounded-xl border border-softPink">
+          10
+        </span>
+      </div>
+
+      <button id="overlordAcceptBtn" disabled onclick="closeOverlordModal()" class="w-full bg-gray-300 text-gray-500 font-black text-xs py-3 rounded-xl transition cursor-not-allowed">
+        ⏳ 請等待鎖定倒數...
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="relative z-10 bg-white/80 border-t border-softPink/30 py-4 text-center text-xs text-softGray space-y-1">
+    <p>餓吉 (E-Ji) 📜 神界第 857 號籤仙 • 美食命運 Hub</p>
+    <p class="text-[10px]">「肚餓別發愁，餓吉幫你抽！」✨</p>
+  </footer>
+
+  <script>
+    /* ==========================================================================
+       1. WEB AUDIO API SOUND ENGINE
+       ========================================================================== */
+    const SoundFX = {
+      ctx: null,
+      muted: false,
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+      },
+
+      playPop() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(300, now);
+        osc.frequency.exponentialRampToValueAtTime(600, now + 0.08);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.08);
+      },
+
+      playShake() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(150 + Math.random() * 50, now);
+        osc.frequency.exponentialRampToValueAtTime(50, now + 0.06);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.06);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.06);
+      },
+
+      playTick() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(500, now);
+        osc.frequency.exponentialRampToValueAtTime(200, now + 0.03);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.03);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.03);
+      },
+
+      playFanfare() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const notes = [440, 554.37, 659.25, 880];
+        notes.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+          gain.gain.setValueAtTime(0.15, now + idx * 0.07);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.25);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.07);
+          osc.stop(now + idx * 0.07 + 0.25);
+        });
+      }
+    };
+
+    function toggleSound() {
+      SoundFX.muted = !SoundFX.muted;
+      document.getElementById('soundIcon').innerText = SoundFX.muted ? '🔇' : '🔊';
+      document.getElementById('soundStatus').innerText = SoundFX.muted ? '音效: 關' : '音效: 開';
+    }
+
+    /* ==========================================================================
+       2. LORE TOGGLE & TABS SWITCHER
+       ========================================================================== */
+    function toggleLore() {
+      const box = document.getElementById('loreBox');
+      const icon = document.getElementById('loreIcon');
+      if (box.classList.contains('hidden')) {
+        box.classList.remove('hidden');
+        icon.innerText = '▲';
+      } else {
+        box.classList.add('hidden');
+        icon.innerText = '▼';
+      }
+      SoundFX.playPop();
+    }
+
+    function switchTab(tabIdx) {
+      SoundFX.playPop();
+      for (let i = 1; i <= 3; i++) {
+        const btn = document.getElementById(`tabBtn${i}`);
+        const container = document.getElementById(`gameTab${i}`);
+        if (i === tabIdx) {
+          btn.className = "tab-btn flex-1 py-2.5 px-3 rounded-xl font-black text-xs md:text-sm transition-all duration-300 bg-warmCoral text-white shadow-sm";
+          container.classList.remove('hidden');
+        } else {
+          btn.className = "tab-btn flex-1 py-2.5 px-3 rounded-xl font-black text-xs md:text-sm transition-all duration-300 text-softGray hover:text-inkBrown";
+          container.classList.add('hidden');
+        }
+      }
+      if (tabIdx === 2) {
+        initRouletteCanvas();
+      }
+    }
+
+    /* ==========================================================================
+       3. GAME 1: 美食命運求籤筒 LOGIC
+       ========================================================================== */
+    const fortuneList = [
+      { tier: "暴吉 ⚡", quote: "「湯頭有多濃，小人退散就有多快！今天大口吃肉就是天意！」", food: "🍜 日式豚骨拉麵" },
+      { tier: "大吉 🌟", quote: "「主管又在戳？咬一口酥脆炸雞舒壓！快樂才是正道！」", food: "🍗 美式韓式雙拼炸雞" },
+      { tier: "中吉 🌶️", quote: "「人生辣一點才刺激！麻辣湯底洗刷一整天的疲憊！」", food: "🍲 川味麻辣鴨血鍋" },
+      { tier: "凶 💀", quote: "「（逆向幽默）今日減肥必定失敗，不如直接吃厚切豬排大快朵頤！」", food: "🥩 咖哩厚切豬排飯" },
+      { tier: "暴吉 ⚡", quote: "「碳水化合物是靈魂的慰藉，今天你就是美食霸王！」", food: "🥟 現包手工鮮肉水餃" }
+    ];
+
+    let isDrawing = false;
+
+    function drawFortune() {
+      if (isDrawing) return;
+      isDrawing = true;
+
+      const bucketSvg = document.getElementById('bucketSvg');
+      const stick = document.getElementById('drawnStick');
+      const resultCard = document.getElementById('fortuneResult');
+
+      resultCard.classList.add('hidden');
+      stick.classList.add('hidden');
+      bucketSvg.classList.add('animate-shake');
+
+      let count = 0;
+      const shakeTimer = setInterval(() => {
+        SoundFX.playShake();
+        count++;
+        if (count >= 5) {
+          clearInterval(shakeTimer);
+          bucketSvg.classList.remove('animate-shake');
+          
+          const fortune = fortuneList[Math.floor(Math.random() * fortuneList.length)];
+          document.getElementById('stickTierText').innerText = fortune.tier.split(' ')[0];
+          stick.classList.remove('hidden');
+
+          setTimeout(() => {
+            SoundFX.playFanfare();
+            document.getElementById('fortuneBadge').innerText = fortune.tier;
+            document.getElementById('fortuneQuote').innerText = fortune.quote;
+            document.getElementById('fortuneFood').innerText = fortune.food;
+            resultCard.classList.remove('hidden');
+            isDrawing = false;
+
+            confetti({ particleCount: 30, spread: 50, origin: { y: 0.7 } });
+          }, 400);
+        }
+      }, 100);
+    }
+
+    function shareFortune() {
+      const food = document.getElementById('fortuneFood').innerText;
+      const tier = document.getElementById('fortuneBadge').innerText;
+      const text = `📜 餓吉求籤：【${tier}】！今日解答：${food}！「肚餓別發愁，餓吉幫你抽！」`;
+      
+      const el = document.createElement('textarea');
+      el.value = text;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+
+      alert('📋 命運籤條已複製！快分享給朋友吧！');
+    }
+
+    /* ==========================================================================
+       4. GAME 2: 美食俄羅斯輪盤 LOGIC
+       ========================================================================== */
+    const presets = {
+      bento: ["排骨便當", "雞腿便當", "燒肉便當", "爌肉飯"],
+      noodle: ["牛肉麵", "豚骨拉麵", "乾意麵", "海鮮烏龍麵"],
+      fastfood: ["起司牛肉堡", "麥克雞塊", "夏威夷披薩", "墨西哥塔可"],
+      healthy: ["舒肥雞沙拉", "夏威夷波奇飯", "溫蔬菜便當", "鮮魚味噌湯"]
+    };
+
+    let rouletteItems = [...presets.bento];
+    let currentAngle = 0;
+    let isSpinning = false;
+
+    function initRouletteCanvas() {
+      const canvas = document.getElementById('rouletteCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const numSegments = rouletteItems.length;
+      const arcSize = (2 * Math.PI) / numSegments;
+      const pastelColors = ["#FFB7B2", "#FFE49E", "#C7CEEA", "#B5EAD7", "#FFDAC1", "#E2F0CB"];
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      const radius = canvas.width / 2 - 8;
+
+      for (let i = 0; i < numSegments; i++) {
+        const angle = currentAngle + i * arcSize;
+        ctx.beginPath();
+        ctx.fillStyle = pastelColors[i % pastelColors.length];
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, radius, angle, angle + arcSize);
+        ctx.lineTo(cx, cy);
+        ctx.fill();
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        ctx.save();
+        ctx.fillStyle = '#4A3E3D';
+        ctx.font = 'bold 12px "Zen Maru Gothic", sans-serif';
+        ctx.textAlign = 'right';
+        ctx.translate(cx, cy);
+        ctx.rotate(angle + arcSize / 2);
+        ctx.fillText(rouletteItems[i], radius - 15, 4);
+        ctx.restore();
+      }
+
+      // Inner Hub
+      ctx.beginPath();
+      ctx.arc(cx, cy, 22, 0, 2 * Math.PI);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fill();
+      ctx.strokeStyle = '#FFE49E';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      document.getElementById('rouletteCount').innerText = `${rouletteItems.length}/6`;
+      renderChips();
+    }
+
+    function renderChips() {
+      const container = document.getElementById('rouletteChips');
+      container.innerHTML = '';
+      rouletteItems.forEach((item, idx) => {
+        const chip = document.createElement('span');
+        chip.className = 'inline-flex items-center space-x-1 bg-white border border-softPink/60 text-inkBrown text-xs px-2.5 py-1 rounded-full font-bold shadow-sm';
+        chip.innerHTML = `<span>${item}</span><button onclick="removeFoodChip(${idx})" class="text-warmCoral hover:text-red-600 ml-1">✕</button>`;
+        container.appendChild(chip);
+      });
+    }
+
+    function loadPreset(key) {
+      if (isSpinning) return;
+      if (presets[key]) {
+        rouletteItems = [...presets[key]];
+        initRouletteCanvas();
+        SoundFX.playPop();
+      }
+    }
+
+    function addFoodChip() {
+      if (isSpinning) return;
+      const input = document.getElementById('customFoodInput');
+      const val = input.value.trim();
+      if (!val) return;
+      if (rouletteItems.length >= 6) {
+        alert('餓吉提醒：最多只能選 6 個，避免猶豫不決！');
+        return;
+      }
+      rouletteItems.push(val);
+      input.value = '';
+      initRouletteCanvas();
+      SoundFX.playPop();
+    }
+
+    function removeFoodChip(idx) {
+      if (isSpinning) return;
+      if (rouletteItems.length <= 3) {
+        alert('餓吉提醒：最少要有 3 個選項才能轉動喔！');
+        return;
+      }
+      rouletteItems.splice(idx, 1);
+      initRouletteCanvas();
+      SoundFX.playPop();
+    }
+
+    function spinWheel() {
+      if (isSpinning) return;
+      isSpinning = true;
+
+      const totalRotation = Math.PI * 2 * (4 + Math.random() * 4);
+      const duration = 3500;
+      const startTime = performance.now();
+      let lastSegment = -1;
+
+      function animate(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        currentAngle = easeOut * totalRotation;
+
+        initRouletteCanvas();
+
+        const arcSize = (2 * Math.PI) / rouletteItems.length;
+        const normAngle = (2 * Math.PI - (currentAngle % (2 * Math.PI))) % (2 * Math.PI);
+        const currentSegment = Math.floor(normAngle / arcSize);
+        if (currentSegment !== lastSegment) {
+          SoundFX.playTick();
+          lastSegment = currentSegment;
+        }
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          isSpinning = false;
+          const pointerAngle = (1.5 * Math.PI - (currentAngle % (2 * Math.PI)) + 10 * Math.PI) % (2 * Math.PI);
+          const winIdx = Math.floor(pointerAngle / arcSize) % rouletteItems.length;
+          triggerOverlordModal(rouletteItems[winIdx]);
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    /* ==========================================================================
+       5. OVERLORD CLAUSE (霸王條款) MODAL LOGIC
+       ========================================================================== */
+    let overlordTimer = null;
+
+    function triggerOverlordModal(foodName) {
+      SoundFX.playFanfare();
+      document.getElementById('overlordResultFood').innerText = foodName;
+      
+      const modal = document.getElementById('overlordModal');
+      const countEl = document.getElementById('overlordCountdown');
+      const acceptBtn = document.getElementById('overlordAcceptBtn');
+
+      modal.classList.remove('hidden');
+
+      let left = 10;
+      countEl.innerText = left;
+      acceptBtn.disabled = true;
+      acceptBtn.className = "w-full bg-gray-200 text-gray-400 font-black text-xs py-3 rounded-xl cursor-not-allowed";
+      acceptBtn.innerText = "⏳ 請等待鎖定倒數 (10s)...";
+
+      confetti({ particleCount: 60, spread: 70, origin: { y: 0.5 } });
+
+      if (overlordTimer) clearInterval(overlordTimer);
+
+      overlordTimer = setInterval(() => {
+        left--;
+        countEl.innerText = left;
+        SoundFX.playTick();
+
+        if (left <= 0) {
+          clearInterval(overlordTimer);
+          SoundFX.playFanfare();
+          acceptBtn.disabled = false;
+          acceptBtn.className = "w-full bg-warmCoral hover:bg-red-500 text-white font-black text-xs py-3 rounded-xl shadow-md transition transform active:scale-95 animate-bounce";
+          acceptBtn.innerText = "👌 命運已決！餓吉命你立刻開吃！";
+        }
+      }, 1000);
+    }
+
+    function closeOverlordModal() {
+      document.getElementById('overlordModal').classList.add('hidden');
+    }
+
+    /* ==========================================================================
+       6. GAME 3: 美食盲盒開箱 LOGIC
+       ========================================================================== */
+    const blindBoxDatabase = {
+      normal: [
+        { name: "🍱 豪華海陸雙拼便當", desc: "照燒雞腿搭配酥炸鮮魚排，滿足感拉滿！", icon: "🍱", badge: "標準賞" },
+        { name: "🍗 香氣四溢三杯雞套餐", desc: "濃郁九層塔與麻油香，飯殺手無誤！", icon: "🍗", badge: "美味賞" },
+        { name: "🥘 義式番茄海鮮燉飯", desc: "濃郁紅醬包裹新鮮蝦仁與蛤蜊，神仙口感！", icon: "🥘", badge: "異國賞" }
+      ],
+      easterEggLuxury: {
+        name: "✨【5% 隱藏彩蛋】極致奢華 A5 和牛便當",
+        desc: "恭喜抽中 5% 極致隱藏款！油花爆汁的頂級 A5 和牛，今日你就是最幸運的饕客！",
+        icon: "🥩",
+        badge: "✨ 5% 隱藏彩蛋賞"
+      },
+      easterEggFunny: {
+        name: "🤪【5% 搞笑大冒險】超商三個茶葉蛋加生菜",
+        desc: "餓吉壞笑：今日腸胃要清爽！立刻出發去隔壁超商買 3 顆茶葉蛋加綜合生菜！",
+        icon: "🥚",
+        badge: "🤪 5% 搞笑大冒險"
+      }
+    };
+
+    function openBlindBox(color) {
+      SoundFX.playPop();
+
+      const rand = Math.random();
+      let item;
+
+      if (rand < 0.05) {
+        item = blindBoxDatabase.easterEggLuxury;
+      } else if (rand >= 0.05 && rand < 0.10) {
+        item = blindBoxDatabase.easterEggFunny;
+      } else {
+        const list = blindBoxDatabase.normal;
+        item = list[Math.floor(Math.random() * list.length)];
+      }
+
+      SoundFX.playFanfare();
+      document.getElementById('blindBoxBadge').innerText = item.badge;
+      document.getElementById('blindBoxIcon').innerText = item.icon;
+      document.getElementById('blindBoxTitle').innerText = item.name;
+      document.getElementById('blindBoxDesc').innerText = item.desc;
+
+      const modal = document.getElementById('blindBoxResultModal');
+      modal.classList.remove('hidden');
+
+      confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+    }
+
+    function closeBlindBoxModal() {
+      document.getElementById('blindBoxResultModal').classList.add('hidden');
+    }
+
+    // Init page load
+    window.onload = function() {
+      initRouletteCanvas();
+    };
+  </script>
+</body>
+</html>
